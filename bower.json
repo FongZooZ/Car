@@ -1,0 +1,19 @@
+{
+  "name": "car",
+  "version": "0.0.0",
+  "authors": [
+    "FongZooZ <FongZooZ1@gmail.com>"
+  ],
+  "description": "",
+  "main": "app.js",
+  "moduleType": [],
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
