@@ -1,8 +1,10 @@
-var csv = require('fast-csv'),
+var
+	csv = require('fast-csv'),
 	_ = require('underscore'),
 	async = require('async');
 
-var CarService = require('../services/carService'),
+var
+	CarService = require('../services/carService'),
 	CountryService = require('../services/countryService'),
 	MakeService = require('../services/makeService'),
 	ModelService = require('../services/modelService'),
@@ -11,14 +13,14 @@ var CarService = require('../services/carService'),
 	Make = require('../services/models/Make'),
 	Model = require('../services/models/Model');
 
-var stocks = [],
-	freights = [],
+var
 	stocksPath = './data/stocks.csv',
 	freightsPath = './data/freights.csv',
 	makes = [],
 	models = [],
 	cars = [],
-	countries = [];
+	countries = [],
+	ports = [];
 
 /**
  * Load data from csv
@@ -32,11 +34,10 @@ var load = function load(callback) {
 				headers: true,
 				objectMode: true
 			}).on("data", function(data) {
-				data.FOBPrice = parseInt(data.FOBPrice);
+				data.FOBPrice = parseInt(data.FOBPrice) || 0;
 				data.VehicleWidth = parseInt(data.VehicleWidth);
 				data.VehicleLength = parseInt(data.VehicleLength);
 				data.VehicleHeight = parseInt(data.VehicleHeight);
-				stocks.push(data);
 				makes.push({
 					name: data.Make
 				});
@@ -62,7 +63,7 @@ var load = function load(callback) {
 				models = _.uniq(models, function(model) {
 					return model.name;
 				});
-				callback(null, [stocks, makes, models]);
+				callback(null, [makes, models]);
 			});
 		},
 		function(callback) {
@@ -70,9 +71,15 @@ var load = function load(callback) {
 				headers: true,
 				objectMode: true
 			}).on("data", function(data) {
-				data.USDperm3 = parseInt(data.USDperm3);
-				freights.push(data);
-				countries.push(data.Country);
+				data.USDperm3 = parseInt(data.USDperm3) || 0;
+				countries.push({
+					name: data.Country
+				});
+				ports.push({
+					name: data.Port,
+					country: data.Country,
+					costPerVolume: data.USDperm3
+				});
 			}).on("end", function() {
 				countries = _.uniq(countries);
 				callback(null, countries);
@@ -169,7 +176,6 @@ var loadStocks = function loadStocks() {
 								if (err) {
 									callback3(err);
 								} else {
-									console.log(1)
 									callback3(null, cars);
 								}
 							});
@@ -189,7 +195,6 @@ var loadStocks = function loadStocks() {
 								if (err) {
 									callback3(err);
 								} else {
-									console.log(2)
 									callback3(null, cars);
 								}
 							});
@@ -198,22 +203,13 @@ var loadStocks = function loadStocks() {
 						if (err) {
 							callback2(err);
 						} else {
-							console.log(3)
 							callback2();
 						}
 					});
 				},
 				// add car to database
 				function(callback2) {
-					async.each(cars, function(car, callback3) {
-						CarService.createCar(car, function(err, car) {
-							if (err) {
-								callback3(err);
-							} else {
-								callback3();
-							}
-						});
-					}, function(err) {
+					CarService.createCar(cars, function(err, cars) {
 						if (err) {
 							callback2(err);
 						} else {
@@ -239,10 +235,74 @@ var loadStocks = function loadStocks() {
 }
 
 var loadFreights = function loadFreights() {
+	async.series([
+		// add countries
+		function(callback1) {
+			async.eachLimit(countries, 20, function(country, callback2) {
+				CountryService.createCountry(country, function(err, country) {
+					if (err) {
+						callback2(err);
+					} else {
+						callback2();
+					}
+				});
+			}, function(err) {
+				if (err) {
+					callback1(err);
+				} else {
+					callback1();
+				}
+			})
+		},
 
+		// add ports
+		function(callback1) {
+			async.series([
+				function(callback2) {
+					async.each(ports, function(port, callback3) {
+						CountryService.getCountryByName(port.country, function(err, country) {
+							if (err) {
+								callback3(err)
+							} else {
+								ports[ports.indexOf(port)].country = country._id;
+								callback3();
+							}
+						});
+					}, function(err) {
+						if (err) {
+							callback2(err);
+						} else {
+							callback2();
+						}
+					});
+				},
+				function(callback3) {
+					PortService.createPort(ports, function(err, ports) {
+						if (err) {
+							callback3(err);
+						} else {
+							callback3();
+						}
+					});
+				}
+			], function(err) {
+				if (err) {
+					callback1(err);
+				} else {
+					callback1();
+				}
+			});
+		}
+	], function(err) {
+		if (err) {
+			console.log(err);
+		} else {
+			console.log("done");
+		}
+	});
 }
 
 load(function() {
 	// loadStocks();
-	loadFreights();
+	// loadFreights();
 });

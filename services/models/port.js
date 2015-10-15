@@ -8,7 +8,7 @@ var portSchema = new Schema({
 		type: ObjectId,
 		ref: 'Country'
 	},
-	cost: Number
+	costPerVolume: Number
 });
 
 var Port = mongoose.model('Port', portSchema, 'Port');

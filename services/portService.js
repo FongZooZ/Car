@@ -1,5 +1,7 @@
-var Country = require('./models/Country');
-var ObjectUtil = require('../utils/objectUtil');
+var
+	Country = require('./models/Country'),
+	Port = require('./models/Port'),
+	ObjectUtil = require('../utils/objectUtil');
 
 /**
  * Get Port by port._id
