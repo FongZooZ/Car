@@ -13,9 +13,11 @@ var carSchema = new Schema({
 		ref: 'Model'
 	},
 	fob: Number,
-	width: Number,
-	length: Number,
-	height: Number
+	specs: {
+		width: Number,
+		length: Number,
+		height: Number
+	}
 });
 
 var Car = mongoose.model('car', carSchema,'car');
