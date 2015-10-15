@@ -1,6 +1,8 @@
 var mongoose = require('mongoose'),
 	Schema = mongoose.Schema,
-	ObjectId = Schema.ObjectId;
+	ObjectId = Schema.ObjectId,
+	Make = require('./Make'),
+	Model = require('./Model');
 
 var carSchema = new Schema({
 	referenceNo: String,
@@ -20,6 +22,6 @@ var carSchema = new Schema({
 	}
 });
 
-var Car = mongoose.model('car', carSchema,'car');
+var Car = mongoose.model('Car', carSchema, 'Car');
 
 module.exports = Car;

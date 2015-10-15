@@ -5,6 +5,6 @@ var makeSchema = new Schema({
 	name: String
 });
 
-var Make = mongoose.model('make', makeSchema, 'make');
+var Make = mongoose.model('Make', makeSchema, 'Make');
 
 module.exports = Make;

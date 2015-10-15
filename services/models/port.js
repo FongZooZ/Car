@@ -11,6 +11,6 @@ var portSchema = new Schema({
 	cost: Number
 });
 
-var Port = mongoose.model('port', portSchema, 'port');
+var Port = mongoose.model('Port', portSchema, 'Port');
 
 module.exports = Port;

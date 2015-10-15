@@ -7,7 +7,9 @@ var CarService = require('../services/carService'),
 	MakeService = require('../services/makeService'),
 	ModelService = require('../services/modelService'),
 	PortService = require('../services/portService'),
-	Make = require('../services/models/Make');
+	Car = require('../services/models/Car'),
+	Make = require('../services/models/Make'),
+	Model = require('../services/models/Model');
 
 var stocks = [],
 	freights = [],
@@ -81,69 +83,69 @@ var load = function load(callback) {
 	});
 }
 
-load(function() {
+var loadStocks = function loadStocks() {
 	async.series([
 		// add makes
-		// function(callback1) {
-		// 	async.each(makes, function(make, callback2) {
-		// 		MakeService.createMake(make, function(err, make) {
-		// 			if (err) {
-		// 				callback2(err);
-		// 			} else {
-		// 				callback2();
-		// 			}
-		// 		});
-		// 	}, function(err) {
-		// 		if (err) {
-		// 			callback1(err);
-		// 		} else {
-		// 			callback1();
-		// 		}
-		// 	});
-		// },
+		function(callback1) {
+			async.each(makes, function(make, callback2) {
+				MakeService.createMake(make, function(err, make) {
+					if (err) {
+						callback2(err);
+					} else {
+						callback2();
+					}
+				});
+			}, function(err) {
+				if (err) {
+					callback1(err);
+				} else {
+					callback1();
+				}
+			});
+		},
 
 		// add models
-		// function(callback1) {
-		// 	var modelsData = [];
-		// 	async.series([
-		// 		function(callback2) {
-		// 			async.each(models, function(model, callback3) {
-		// 				MakeService.getMakeByName(model.make, function(err, make) {
-		// 					if (err) {
-		// 						callback3(err);
-		// 					} else {
-		// 						modelsData.push({
-		// 							name: model.name,
-		// 							make: make._id
-		// 						});
-		// 						callback3();
-		// 					}
-		// 				});
-		// 			}, function(err) {
-		// 				if (err) {
-		// 					callback2(err);
-		// 				} else {
-		// 					callback2();
-		// 				}
-		// 			});
-		// 		},
-		// 		function(callback2) {
-		// 			ModelService.createModel(modelsData, function(err, models) {
-		// 				if (err) {
-		// 					callback2(err);
-		// 				} else {
-		// 					callback2();
-		// 				}
-		// 			});
-		// 		}
-		// 	], function(err) {
-		// 		if (err) {
-		// 			callback1(err);
-		// 		} else {
-		// 			callback1();
-		// 		}
-		// 	});
-		// },
+		function(callback1) {
+			var modelsData = [];
+			async.series([
+				function(callback2) {
+					async.each(models, function(model, callback3) {
+						MakeService.getMakeByName(model.make, function(err, make) {
+							if (err) {
+								callback3(err);
+							} else {
+								modelsData.push({
+									name: model.name,
+									make: make._id
+								});
+								callback3();
+							}
+						});
+					}, function(err) {
+						if (err) {
+							callback2(err);
+						} else {
+							callback2();
+						}
+					});
+				},
+				function(callback2) {
+					ModelService.createModel(modelsData, function(err, models) {
+						if (err) {
+							callback2(err);
+						} else {
+							callback2();
+						}
+					});
+				}
+			], function(err) {
+				if (err) {
+					callback1(err);
+				} else {
+					callback1();
+				}
+			});
+		},
 
 		// add cars
 		function(callback1) {
@@ -234,4 +236,13 @@ load(function() {
 			console.log('done');
 		}
 	});
+}
+
+var loadFreights = function loadFreights() {
+
+}
+
+load(function() {
+	// loadStocks();
+	loadFreights();
 });

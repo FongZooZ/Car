@@ -10,6 +10,6 @@ var modelSchema = new Schema({
 	}
 });
 
-var Model = mongoose.model('model', modelSchema, 'model');
+var Model = mongoose.model('Model', modelSchema, 'Model');
 
 module.exports = Model;
