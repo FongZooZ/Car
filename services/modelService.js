@@ -20,9 +20,33 @@ var getModelById = function getModelById(id, callback) {
 		if (model) {
 			callback(null, model);
 		} else {
-			return callback(new Error('Car does not exist'));
+			return callback(new Error('Model does not exist'));
 		}
 	});
+}
+
+/**
+ * Get Model by model.name
+ * @param  {String}   name     Model name
+ * @param  {Function} callback Callback function
+ * @return {void}
+ */
+var getModelByName = function getModelByName(name, callback) {
+	if (!name) {
+		return callback(new Error('name is null'));
+	}
+	Model.findOne({
+		name: name
+	}, function(err, model) {
+		if (err) {
+			return callback(err);
+		}
+		if (model) {
+			callback(null, model);
+		} else {
+			return callback(new Error('Model does not exist'));
+		}
+	})
 }
 
 /**
@@ -45,5 +69,6 @@ var createModel = function createModel(model, callback) {
 
 module.exports = {
 	getModelById: getModelById,
+	getModelByName: getModelByName,
 	createModel: createModel
 }

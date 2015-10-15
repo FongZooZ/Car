@@ -1,4 +1,5 @@
 var Make = require('./models/Make');
+var ModelService = require('./modelService');
 
 /**
  * Get Make by make._id
@@ -25,6 +26,61 @@ var getMakeById = function getMakeById(id, callback) {
 }
 
 /**
+ * Get Make by make.name
+ * @param  {ObjectId}	id       _id of Make
+ * @param  {Function} callback Callback function
+ * @return {void}
+ */
+var getMakeByName = function getMakeByName(name, callback) {
+	if (!name) {
+		return callback(new Error('name is null'));
+	}
+	Make.findOne({
+		name: name
+	}, function(err, make) {
+		if (err) {
+			return callback(err);
+		}
+		if (make) {
+			callback(null, make);
+		} else {
+			callback(new Error('Make does not exit'));
+		}
+	});
+}
+
+/**
+ * Get Make by model.name
+ * @param  {String}   name     Model name
+ * @param  {Function} callback Callback function
+ * @return {void}
+ */
+var getMakeByModelName = function getMakeByModelName(name, callback) {
+	if (name) {
+		return callback(new Error('name is null'));
+	}
+	ModelService.getModelByName(name, function(err, model) {
+		if (err) {
+			return callback(err);
+		}
+		if (!model) {
+			return callback(new Error('Model does not exist'));
+		} else {
+			getMakeById(model._id, function(err, make) {
+				if (err) {
+					return callback(err);
+				}
+				if (make) {
+					callback(null, make);
+				} else {
+					return callback(new Error('Make does not exist'))
+				}
+			});
+		}
+	});
+}
+
+/**
  * Create a Make
  * @param  {Object}   make     Data of Make
  * @param  {Function} callback Callback function
@@ -44,5 +100,7 @@ var createMake = function createMake(make, callback) {
 
 module.exports = {
 	getMakeById: getMakeById,
+	getMakeByName: getMakeByName,
+	getMakeByModelName: getMakeByModelName,
 	createMake: createMake
 }
