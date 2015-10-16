@@ -1,5 +1,6 @@
-var Country = require('./models/Country');
-var ObjectUtil = require('../utils/objectUtil');
+var
+	Country = require('./models/Country'),
+	ObjectUtil = require('../utils/objectUtil');
 
 /**
  * Get Country by country._id
@@ -21,6 +22,24 @@ var getCountryById = function getCountryById(id, callback) {
 			callback(null, country);
 		} else {
 			return callback(new Error('Country does not exist'));
+		}
+	});
+}
+
+/**
+ * Get all country
+ * @param  {Function} callback Callback function
+ * @return {void}
+ */
+var getAllCountry = function getAllCountry(callback) {
+	Country.find({}, function(err, countries) {
+		if (err) {
+			return callback(err);
+		}
+		if (countries) {
+			callback(null, countries);
+		} else {
+			return callback(new Error('Counties does not exist'));
 		}
 	});
 }
@@ -69,6 +88,7 @@ var createCountry = function createCountry(country, callback) {
 
 module.exports = {
 	getCountryById: getCountryById,
+	getAllCountry: getAllCountry,
 	getCountryByName: getCountryByName,
 	createCountry: createCountry
 }

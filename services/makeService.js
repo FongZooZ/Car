@@ -1,5 +1,6 @@
-var Make = require('./models/Make');
-var ModelService = require('./modelService');
+var
+	Make = require('./models/Make'),
+	ModelService = require('./modelService');
 
 /**
  * Get Make by make._id

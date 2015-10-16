@@ -81,7 +81,9 @@ var load = function load(callback) {
 					costPerVolume: data.USDperm3
 				});
 			}).on("end", function() {
-				countries = _.uniq(countries);
+				countries = _.uniq(countries, function(country) {
+					return country.name;
+				});
 				callback(null, countries);
 			});
 		}

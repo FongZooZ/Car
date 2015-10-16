@@ -1,9 +1,16 @@
-var express = require('express');
-var router = express.Router();
+var
+	express = require('express'),
+	router = express.Router();
+
+var
+	Home = require('../api/Home'),
+	Port = require('../api/Port');
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
+router.get('/', Home.index);
+
+// Port
+router.get('/api/port', Port.getAllPort);
+router.get('/api/port/:id', Port.getPortByCountry);
 
 module.exports = router;

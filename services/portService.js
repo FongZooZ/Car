@@ -24,7 +24,49 @@ var getPortById = function getPortById(id, callback) {
 		} else {
 			return callback(new Error('Port is not exist'));
 		}
-	})
+	});
+}
+
+/**
+ * Get Port by port.country._id
+ * @param  {ObjectId}   id     _id of Port
+ * @param  {Function} callback Callback function
+ * @return {void}
+ */
+var getPortByCountry = function getPortByCountry(id, callback) {
+	if (!id) {
+		return callback(new Error('id is null'));
+	}
+	Port.find({
+		country: id
+	}).populate('country').exec(function(err, port) {
+		if (err) {
+			return callback(err);
+		}
+		if (port) {
+			callback(null, port);
+		} else {
+			return callback(new Error('Port is not exist'));
+		}
+	});
+}
+
+/**
+ * Get all port
+ * @param  {Function} callback Callback function
+ * @return {void}
+ */
+var getAllPort = function getAllPort(callback) {
+	Port.find({}).populate('country').exec(function(err, ports) {
+		if (err) {
+			return callback(err);
+		}
+		if (ports) {
+			callback(null, ports);
+		} else {
+			return callback(new Error('Ports is not exist'));
+		}
+	});
 }
 
 /**
@@ -47,5 +89,7 @@ var createPort = function createPort(port, callback) {
 
 module.exports = {
 	getPortById: getPortById,
+	getPortByCountry: getPortByCountry,
+	getAllPort: getAllPort,
 	createPort: createPort
 }

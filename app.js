@@ -1,12 +1,14 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var csv = require('fast-csv');
+var express = require('express'),
+  path = require('path'),
+  favicon = require('serve-favicon'),
+  logger = require('morgan'),
+  cookieParser = require('cookie-parser'),
+  bodyParser = require('body-parser'),
+  mongoose = require('mongoose'),
+  csv = require('fast-csv');
 
-var mongoose = require('mongoose');
+var csvUtil = require('./utils/csvUtil');
+
 mongoose.connect('mongodb://localhost/Car');
 
 var routes = require('./routes/index');
@@ -28,7 +30,6 @@ app.use('/bower', express.static(path.join(__dirname, '/bower_components')));
 
 app.use('/', routes);
 
-var csvUtil = require('./utils/csvUtil');
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

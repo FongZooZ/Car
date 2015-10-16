@@ -1,5 +1,6 @@
-var Car = require('./models/Car');
-var ObjectUtil = require('../utils/objectUtil');
+var
+	Car = require('./models/Car'),
+	ObjectUtil = require('../utils/objectUtil');
 
 /**
  * Get Car by car._id
@@ -14,6 +15,24 @@ var getCarById = function getCarById(id, callback) {
 	Car.findOne({
 		_id: id
 	}).populate('make model').exec(function(err, car) {
+		if (err) {
+			return callback(err);
+		}
+		if (car) {
+			callback(null, car);
+		} else {
+			return callback(new Error('Car does not exist'));
+		}
+	});
+}
+
+/**
+ * Get all car
+ * @param  {Function} callback Callback function
+ * @return {void}
+ */
+var getAllCar = function getAllCar(callback) {
+	Car.find({}).populate('make model').exec(function(err, car) {
 		if (err) {
 			return callback(err);
 		}
@@ -45,5 +64,6 @@ var createCar = function createCar(car, callback) {
 
 module.exports = {
 	getCarById: getCarById,
+	getAllCar: getAllCar,
 	createCar: createCar
 }

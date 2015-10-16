@@ -1,5 +1,6 @@
-var Model = require('./models/Model');
-var ObjectUtil = require('../utils/objectUtil');
+var
+	Model = require('./models/Model'),
+	ObjectUtil = require('../utils/objectUtil');
 
 /**
  * Get Model by model._id
