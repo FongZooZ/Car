@@ -8,7 +8,7 @@
 	<br>
 	<fieldset ng-if="country">
 		<label for="port" class="col-lg-2 control-label">Port</label>
-		<select class="form-control" id="port" ng-init="port = null" ng-options="p._id as p.name for p in ports | orderBy:'country.name'" ng-model="port">
+		<select class="form-control" id="port" ng-change="displayFinalPrice(port);" ng-options="p._id as p.name for p in ports | orderBy:'country.name'" ng-model="port">
 			<option value="">Select port</option>
 		</select>
 	</fieldset>

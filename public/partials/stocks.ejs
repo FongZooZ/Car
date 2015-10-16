@@ -4,12 +4,21 @@
 			<th ng-repeat="th in thList">{{th}}</th>
 		</thead>
 		<tbody>
-			<tr ng-repeat="car in cars">
+			<tr ng-if="!isDisplayFinalPrice();" ng-repeat="car in cars">
 				<td>{{$index + 1}}</td>
 				<td>{{car.referenceNo}}</td>
 				<td>{{car.make.name}}</td>
 				<td>{{car.model.name}}</td>
 				<td>US ${{car.fob}}</td>
+				<td>ASK</td>
+			</tr>
+			<tr ng-if="isDisplayFinalPrice();" ng-repeat="car in carsWithPrice">
+				<td>{{$index + 1}}</td>
+				<td>{{car.referenceNo}}</td>
+				<td>{{car.make.name}}</td>
+				<td>{{car.model.name}}</td>
+				<td>US ${{car.fob}}</td>
+				<td>{{car.finalPrice}}</td>
 			</tr>
 		</tbody>
 	</table>
