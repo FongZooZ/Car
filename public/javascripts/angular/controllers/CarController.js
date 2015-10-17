@@ -6,6 +6,9 @@ angular.module('car', [])
 		this.getPortByCountry = function(id) {
 			return $http.get('/api/port/' + id);
 		};
+		this.getFinalPrice = function(id) {
+			return $http.get('/api/port/priceForPort/' + id);
+		};
 	})
 	.controller('CarController', function($scope, PortService) {
 		$scope.thList = [
@@ -38,8 +41,12 @@ angular.module('car', [])
 		 */
 		$scope.displayFinalPrice = function(id) {
 			if (!id) {
+				$scope.finalPrice = false;
 				return;
 			}
-			// TODO: call to server, server calculate price then send back to client
+			PortService.getFinalPrice(id).then(function(results) {
+				$scope.finalPrice = true;
+				$scope.carsWithPrice = results.data;
+			});
 		};
 	});

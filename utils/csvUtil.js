@@ -1,7 +1,8 @@
 var
 	csv = require('fast-csv'),
 	_ = require('underscore'),
-	async = require('async');
+	async = require('async'),
+	mongoose = require('mongoose');
 
 var
 	CarService = require('../services/carService'),
@@ -88,10 +89,17 @@ var load = function load(callback) {
 			});
 		}
 	], function(err, results) {
+		if (err) {
+
+		}
 		callback();
 	});
 }
 
+/**
+ * Load Stocks (car, model, make) into database
+ * @return {void}
+ */
 var loadStocks = function loadStocks() {
 	async.series([
 		// add makes
@@ -236,6 +244,10 @@ var loadStocks = function loadStocks() {
 	});
 }
 
+/**
+ * Load Freights (country, port) into database
+ * @return {void}
+ */
 var loadFreights = function loadFreights() {
 	async.series([
 		// add countries
@@ -304,7 +316,43 @@ var loadFreights = function loadFreights() {
 	});
 }
 
+/**
+ * Drop database 'Car'
+ * @return {[type]} [description]
+ */
+var dropCarDB = function dropCarDB() {
+	mongoose.connection.db.dropDatabase();
+}
+
 load(function() {
-	// loadStocks();
-	// loadFreights();
+	async.series([
+		function(callback1) {
+			dropCarDB();
+			callback1();
+		},
+		function(callback1) {
+			async.parallel([
+				function(callback2) {
+					loadStocks();
+					callback2();
+				},
+				function(callback2) {
+					loadFreights();
+					callback2();
+				}
+			], function(err) {
+				if (err) {
+					callback1(err);
+				} else {
+					callback1();
+				}
+			});
+		}
+	], function(err) {
+		if (err) {
+			console.log(err);
+		} else {
+			console.log('done');
+		}
+	});
 });

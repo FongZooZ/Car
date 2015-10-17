@@ -29,7 +29,6 @@ app.use('/bower', express.static(path.join(__dirname, '/bower_components')));
 
 app.use('/', routes);
 
-
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
@@ -60,6 +59,5 @@ app.use(function(err, req, res, next) {
     error: {}
   });
 });
-
 
 module.exports = app;

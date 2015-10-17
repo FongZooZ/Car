@@ -1,24 +1,26 @@
 <div class="col-md-9">
-	<table class="table table-striped table-hover" data-sortable>
+	<table class="table table-striped table-hover sortable-theme-bootstrap" data-sortable>
 		<thead>
+		<tr>
 			<th ng-repeat="th in thList">{{th}}</th>
+		</tr>
 		</thead>
 		<tbody>
-			<tr ng-if="!isDisplayFinalPrice();" ng-repeat="car in cars">
+			<tr ng-if="!finalPrice" ng-repeat="car in cars">
 				<td>{{$index + 1}}</td>
 				<td>{{car.referenceNo}}</td>
 				<td>{{car.make.name}}</td>
 				<td>{{car.model.name}}</td>
-				<td>US ${{car.fob}}</td>
-				<td>ASK</td>
+				<td>${{car.fob}}</td>
+				<td id="final-price">ASK</td>
 			</tr>
-			<tr ng-if="isDisplayFinalPrice();" ng-repeat="car in carsWithPrice">
+			<tr ng-if="finalPrice" ng-repeat="car in carsWithPrice">
 				<td>{{$index + 1}}</td>
 				<td>{{car.referenceNo}}</td>
 				<td>{{car.make.name}}</td>
 				<td>{{car.model.name}}</td>
-				<td>US ${{car.fob}}</td>
-				<td>{{car.finalPrice}}</td>
+				<td>${{car.fob}}</td>
+				<td id="final-price">${{car.pricing.finalPrice.toFixed(2)}}</td>
 			</tr>
 		</tbody>
 	</table>

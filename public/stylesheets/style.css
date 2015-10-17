@@ -6,3 +6,8 @@ body {
 a {
   color: #00B7FF;
 }
+
+#final-price {
+	color:#2980b9;
+	font-weight: bold;
+}
