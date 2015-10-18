@@ -8,13 +8,13 @@
 		<link rel="stylesheet" type="text/css" href="/bower/sortable/css/sortable-theme-bootstrap.css" />
 	</head>
 	<body ng-app="car">
-		<div class="container" ng-controller="CarController">
+		<div class="container" ng-controller="CarController" ng-init="init()">
 			<ng-include src="'/partials/stocks.ejs'"></ng-include>
 			<ng-include src="'/partials/freights.ejs'"></ng-include>
 			<ng-include src="'/partials/results.ejs'"></ng-include>
 		</div>
 		<script type="text/javascript">
-			var cars = <%- JSON.stringify(cars) %>
+
 			var countries = <%- JSON.stringify(countries) %>
 			var ports = <%- JSON.stringify(ports) %>
 		</script>
@@ -22,6 +22,7 @@
 		<script type="text/javascript" src="/bower/bootstrap/dist/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="/bower/angular/angular.min.js"></script>
 		<script type="text/javascript" src="/bower/angular-bootstrap/ui-bootstrap.min.js"></script>
+		<script type="text/javascript" src="/bower/angular-bootstrap/ui-bootstrap-tpls.js"></script>
 		<script type="text/javascript" src="/bower/sortable/js/sortable.min.js"></script>
 		<script type="text/javascript" src="/javascripts/angular/controllers/CarController.js"></script>
 	</body>

@@ -45,7 +45,6 @@ exports.index = function(req, res, next) {
 		} else {
 			res.render('index', {
 				title: 'Car',
-				cars: cars,
 				countries: countries,
 				ports: ports
 			});
