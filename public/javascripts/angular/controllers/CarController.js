@@ -1,4 +1,4 @@
-angular.module('car', [])
+angular.module('car', ['ui.bootstrap'])
 	.service('PortService', function($http, $rootScope) {
 		this.getAllPort = function(id) {
 			return $http.get('/api/port');
@@ -15,10 +15,10 @@ angular.module('car', [])
 			'#', 'Ref No', 'Make', 'Model', 'FOB Price', 'Final Price'
 		];
 		$scope.cars = cars;
-		$scope.carsWithPrice;
 		$scope.countries = countries;
 		$scope.ports;
 		$scope.finalPrice = false;
+		$scope.carsToDisplay = cars;
 
 		/**
 		 * Get port by country id
@@ -42,11 +42,12 @@ angular.module('car', [])
 		$scope.displayFinalPrice = function(id) {
 			if (!id) {
 				$scope.finalPrice = false;
+				$scope.carsToDisplay = cars;
 				return;
 			}
 			PortService.getFinalPrice(id).then(function(results) {
 				$scope.finalPrice = true;
-				$scope.carsWithPrice = results.data;
+				$scope.carsToDisplay = results.data;
 			});
 		};
 	});

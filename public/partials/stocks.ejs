@@ -6,22 +6,22 @@
 		</tr>
 		</thead>
 		<tbody>
-			<tr ng-if="!finalPrice" ng-repeat="car in cars">
+			<tr ng-repeat="car in carsToDisplay">
 				<td>{{$index + 1}}</td>
 				<td>{{car.referenceNo}}</td>
 				<td>{{car.make.name}}</td>
 				<td>{{car.model.name}}</td>
 				<td>${{car.fob}}</td>
-				<td id="final-price">ASK</td>
+				<td ng-if="!finalPrice" id="final-price">ASK</td>
+				<td ng-if="finalPrice" id="final-price">${{car.pricing.finalPrice.toFixed(2)}}</td>
 			</tr>
-			<tr ng-if="finalPrice" ng-repeat="car in carsWithPrice">
+			<!-- <tr ng-if="finalPrice" ng-repeat="car in carsWithPrice">
 				<td>{{$index + 1}}</td>
 				<td>{{car.referenceNo}}</td>
 				<td>{{car.make.name}}</td>
 				<td>{{car.model.name}}</td>
 				<td>${{car.fob}}</td>
-				<td id="final-price">${{car.pricing.finalPrice.toFixed(2)}}</td>
-			</tr>
+			</tr> -->
 		</tbody>
 	</table>
 </div>

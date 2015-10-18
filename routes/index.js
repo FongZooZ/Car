@@ -12,8 +12,6 @@ router.get('/', Home.index);
 // Port
 router.get('/api/port', Port.getAllPort);
 router.get('/api/port/:id', Port.getPortByCountry);
-router.get('/api/port/priceForPort/:id', Port.calculateFinalPrice)
-
-// Pricing
+router.get('/api/port/priceForPort/:id', Port.calculateFinalPrice);
 
 module.exports = router;
